@@ -1,4 +1,6 @@
 //= require ./lib/_energize
+//= require ./lib/_jquery
+//= require ./lib/emojidex.min
 //= require ./app/_toc
 //= require ./app/_lang
 
@@ -9,6 +11,7 @@ $(function() {
     window.recacheHeights();
     window.refreshToc();
   });
+  $("body").emojidexReplace();
 });
 
 window.onpopstate = function() {
