@@ -32,6 +32,10 @@ more than 2 valid auth tokens active at the same time.
 
 Initial Authentication
 ----------------------
+To get an initial set of tokens you must send an authentication request to the authentication 
+endpoint with the username and password passed as parameters in the request.
+  
+Endpoint: /authenticate
 
 | Parameter | Required | Description                      |
 | --------- | -------- | -------------------------------- |
@@ -79,6 +83,11 @@ client = Manabu::Client.new('admin', '123456', ':endpoint:', 9000,
 
 Token Refresh
 -------------
+To refresh a token set, send the refresh token as a parameter and accopany the request with the 
+accompanying auth_token as the Authroization attribute in the request header. If the request 
+succeeds you will receive a new set of tokens.
+  
+Endpoint: /authenticate/refresh
 
 | Header Attribute | Required | Description                                   |
 | ---------------- | -------- | --------------------------------------------- |
@@ -90,7 +99,8 @@ Token Refresh
 
 ```shell
 curl -X POST \
-':endpoint:/api/v1/authenticate/refresh/refresh_token=:refresh_token:'
+':endpoint:/api/v1/authenticate/refresh/refresh_token=:refresh_token:' \
+-H 'Authorization: auth_tokenGoesHere'
 ```
 
 ```JSON
@@ -117,6 +127,14 @@ curl -X POST \
 }
 ```
 
+```ruby
+# The Manabu client automatically refreshes your tokens
+```
+
+```cpp
+// libmanabu automatically refreshes your tokens
+```
+
 Refresh Token Invalidation ("Closing" a session)
 ------------------------------------------------
 Refresh tokens are invalidated once used, so each time you refresh you also need 
@@ -131,3 +149,48 @@ effectively "close out" a session by intentionally sending a refresh request
 with the refresh token and without an auth token in the headers or with an 
 invalid auth token in the headers - making further refreshes impossible and 
 requiring a new set of tokens be issued with a new authorization request.
+  
+
+Endpoint: /authenticate/refresh
+
+| Parameter     | Required | Description                                      |
+| ------------- | -------- | ------------------------------------------------ |
+| refresh_token | *        | send :refresh_token: from authentication request |
+
+```shell
+curl -X POST \
+':endpoint:/api/v1/authenticate/refresh/refresh_token=:refresh_token:' \
+```
+
+```JSON
+# request *NOTE!: If the accompanying auth_token in your request headers you will 
+#  end up refreshing the tokens instead of invalidating them!
+{
+  "refresh_token": "... a very long base64 string ..."
+}
+
+# successful response (user refresh token invalidated)
+{
+  "error": {
+    "user_authentication": ["invalid or expired refresh token"]
+  }
+}
+
+# failed response (you accidentally refreshed the tokens)
+{
+  "tokens": {
+    "auth_token": "... a very long base64 string ...",
+    "refresh_token": "... a very long base64 string ..."
+  }
+}
+```
+
+```ruby
+# When the Client or Authorization modules go out of scope  
+#  an attempt to invalidate the refesh token will be made.
+```
+
+```cpp
+// The desctructor for Manabu/the Manabu Authentication objects 
+//  will attempt to invalidate the session for you.
+```
