@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>GAKU Engine API Reference</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -196,12 +196,13 @@
   color: #f92672;
 }
     </style>
+    <link href="./stylesheets/emojidex.min.css" rel="stylesheet" />
     <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" media="print" />
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;json&quot;,&quot;ruby&quot;,&quot;cpp&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,230 +213,993 @@
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
+              <a href="#" data-language-name="json">json</a>
               <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="cpp">cpp</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
         </div>
         <ul class="search-results"></ul>
-      <div id="toc" class="toc-list-h1">
+      <ul id="toc" class="toc-list-h1">
           <li>
-            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+            <a href="#gakuengine-introduction" class="toc-h1 toc-link" data-title=":GAKUEngine: Introduction">:GAKUEngine: Introduction</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#protocols" class="toc-h2 toc-link" data-title="Protocols">Protocols</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#clients" class="toc-h1 toc-link" data-title="Clients">Clients</a>
           </li>
           <li>
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
-          </li>
-          <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Get All Kittens">Get All Kittens</a>
+                    <a href="#initial-authentication" class="toc-h2 toc-link" data-title="Initial Authentication">Initial Authentication</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Get a Specific Kitten">Get a Specific Kitten</a>
+                    <a href="#token-refresh" class="toc-h2 toc-link" data-title="Token Refresh">Token Refresh</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Delete a Specific Kitten">Delete a Specific Kitten</a>
+                    <a href="#refresh-token-invalidation-quot-closing-quot-a-session" class="toc-h2 toc-link" data-title="Refresh Token Invalidation ("Closing" a session)">Refresh Token Invalidation ("Closing" a session)</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#roles" class="toc-h1 toc-link" data-title="Roles">Roles</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-roles-list" class="toc-h2 toc-link" data-title="Get roles list">Get roles list</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#index" class="toc-h2 toc-link" data-title="Index">Index</a>
+                  </li>
+                  <li>
+                    <a href="#create" class="toc-h2 toc-link" data-title="Create">Create</a>
+                  </li>
+                  <li>
+                    <a href="#update" class="toc-h2 toc-link" data-title="Update">Update</a>
+                  </li>
+                  <li>
+                    <a href="#add-role" class="toc-h2 toc-link" data-title="Add Role">Add Role</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#students" class="toc-h1 toc-link" data-title="Students">Students</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#obtaining-the-roster-student-index" class="toc-h2 toc-link" data-title="Obtaining the Roster [Student Index]">Obtaining the Roster [Student Index]</a>
+                  </li>
+                  <li>
+                    <a href="#obtaining-a-filtered-roster-student-index-filtering" class="toc-h2 toc-link" data-title="Obtaining a Filtered Roster [Student Index Filtering]">Obtaining a Filtered Roster [Student Index Filtering]</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-new-student" class="toc-h2 toc-link" data-title="Create a New Student">Create a New Student</a>
+                  </li>
+                  <li>
+                    <a href="#update-a-student" class="toc-h2 toc-link" data-title="Update a student">Update a student</a>
+                  </li>
+                  <li>
+                    <a href="#get-a-student-picture" class="toc-h2 toc-link" data-title="Get a student picture">Get a student picture</a>
+                  </li>
+                  <li>
+                    <a href="#set-picture-to-a-student" class="toc-h2 toc-link" data-title="Set Picture to a student">Set Picture to a student</a>
+                  </li>
+                  <li>
+                    <a href="#list-student-guardians" class="toc-h2 toc-link" data-title="List student guardians">List student guardians</a>
+                  </li>
+                  <li>
+                    <a href="#list-student-courses" class="toc-h2 toc-link" data-title="List student courses">List student courses</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#enrollment-status" class="toc-h1 toc-link" data-title="Enrollment Status">Enrollment Status</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-all-enrollment-statuses" class="toc-h2 toc-link" data-title="List all enrollment statuses">List all enrollment statuses</a>
+                  </li>
+                  <li>
+                    <a href="#test-all-enrollment-statuses" class="toc-h2 toc-link" data-title="Test all enrollment statuses">Test all enrollment statuses</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#contact-types" class="toc-h1 toc-link" data-title="Contact Types">Contact Types</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-contact-types-list" class="toc-h2 toc-link" data-title="Get contact types list">Get contact types list</a>
+                  </li>
+                  <li>
+                    <a href="#register-new-contact-type" class="toc-h2 toc-link" data-title="Register new contact type">Register new contact type</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#courses" class="toc-h1 toc-link" data-title="Courses">Courses</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-courses" class="toc-h2 toc-link" data-title="List Courses">List Courses</a>
+                  </li>
+                  <li>
+                    <a href="#register-course" class="toc-h2 toc-link" data-title="Register course">Register course</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#course" class="toc-h1 toc-link" data-title="Course">Course</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-students" class="toc-h2 toc-link" data-title="Get students">Get students</a>
+                  </li>
+                  <li>
+                    <a href="#get-enrollments" class="toc-h2 toc-link" data-title="Get enrollments">Get enrollments</a>
+                  </li>
+                  <li>
+                    <a href="#add-student-to-course" class="toc-h2 toc-link" data-title="Add student to course">Add student to course</a>
+                  </li>
+                  <li>
+                    <a href="#set-course-enrollment-seat_number-for-student" class="toc-h2 toc-link" data-title="Set course enrollment seat_number for student">Set course enrollment seat_number for student</a>
+                  </li>
+                  <li>
+                    <a href="#get-enrollment-student" class="toc-h2 toc-link" data-title="Get enrollment student">Get enrollment student</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#syllabuses" class="toc-h1 toc-link" data-title="Syllabuses">Syllabuses</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-syllabuses" class="toc-h2 toc-link" data-title="List Syllabuses">List Syllabuses</a>
+                  </li>
+                  <li>
+                    <a href="#register-course" class="toc-h2 toc-link" data-title="Register course">Register course</a>
                   </li>
               </ul>
           </li>
           <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
-      </div>
+      </ul>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
+            <li><a href='http://www.gakuengine.com'>GAKU Engine</a></li>
+            <li><a href='https://github.com/GAKUEngine/gaku'>GAKU Engine on GitHub</a></li>
+            <li><a href='https://github.com/GAKUEngine/manabu'>Manabu Ruby Client on GitHub</a></li>
+            <li><a href='https://github.com/GAKUEngine/manabu-desktop'>Manabu-Desktop Ruby + GTK Client on GitHub</a></li>
             <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+        <h1 id='gakuengine-introduction'>:GAKUEngine: Introduction</h1>
+<p>The GAKU Engine API comes standard with any install of GAKU Engine, though it may be disabled
+by removing the &quot;gaku-api&quot; gem from your Gemfile. All calls to the API other than the &#39;status&#39;
+call require authentication.  </p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>There are two official client libraries/modules available from the GAKU Engine team. These are:<br>
+:学君: <a href="https://github.com/GAKUEngine/manabu">Manabu</a>: A pure Ruby implementation that is 
+developed in parity with the GAKU Engine API.<br>
+:学君: <a href="https://github.com/GAKUEngine/libmanabu">libmanabu</a>: A portable C++ re-implementation 
+of Manabu with several native interfaces to different languages.  </p>
 
-<p>This example API documentation page was created with <a href="https://github.com/lord/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
-<h1 id='authentication'>Authentication</h1>
+<aside class="notice">A pure JavaScript implementation may be provided in the future if there is enough demand.</aside>
+<h2 id='protocols'>Protocols</h2>
+<p>The GAKU Engine API can be accessed with either <a href="https://msgpack.org/">MessagePack</a> or JSON.
+We highly recommend you use MessagePack as a lot of data from the API can be quite extensive
+and MessagePack does a significantly better job of transporting this data quickly.</p>
+<h1 id='clients'>Clients</h1>
+<p>There are several clients made to interface with a GAKU Engine server. All samples other than the 
+shell examples and JSON example data are using either the Manabu Ruby client, libmanabu, or a 
+libmanabu based native interface.</p>
+
+<p>All examples in this documentation assume you have the required gems/libraries/packages installed 
+or are accessible.</p>
+<pre class="highlight shell tab-shell"><code></code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="cp">#include "manabu.h" 
+</span></code></pre><h1 id='authentication'>Authentication</h1>
+<p>Authentication (issuance of auth tokens) is done against the /authenticate endpoint. 
+To authenticate, send <em>username</em> and <em>password</em> arguments in a query against this endpoint. 
+Successful authentication will return a set of tokens, an <em>auth_token</em> which is used to perform 
+queries and a <em>refresh_token</em> which can be used to obtain a new set of auth and refresh tokens. 
+By periodically obtaining a new set of tokens with the refresh token, you can maintain a &quot;session&quot; 
+indefinitely. If you do not redeem the refresh token it will expire after a set period of time, 
+and the user will have to re-authenticate in order to start interacting with the API again. </p>
+
+<p>Keep in mind tokens are not encrypted by themselves - without encryption on the connection 
+such as SSL/HTTPS the tokens will be susceptable to sniffing.</p>
+
+<aside class="warning">Auth token must be refreshed. By default, auth tokens expire after 3 
+minutes. By default refresh tokens are valid for 5 minutes. This may be different on each server 
+you are interacting with, so be sure to check the time to expiration in the response.</aside>
+
+<p>After obtaining the tokens you must put the auth_token in your HTTP(S) headers under the 
+&quot;Authorization&quot; attribute (EG: &quot;Authorization: abcdefg...XYZ&quot;). Keep in mind you can make 
+asynchronous token refreshes without worrying about a refresh request being sent before a 
+request returns as long as you stagger your refreshes in such a way as newly refreshed tokens 
+are obtained before the old ones expire.</p>
+
+<aside class="notice">A refresh request does not invalidate the previous token. All auth tokens 
+are only expired by timeout, and there is no way to immediately revoke a token (by design, as per 
+the JWT specification which GAKU auth is based off of).</aside>
+
+<p>The minimum amount of time any auth_token will be valid is 2 minutes, and the minimum a 
+refresh_token will be valid is 3 minutes. We recommend you refresh your tokens about one minute 
+before your auth_token expires. This way you can safely maintain a connection without having any 
+more than 2 valid auth tokens active at the same time.</p>
+<h2 id='initial-authentication'>Initial Authentication</h2>
+<p>To get an initial set of tokens you must send an authentication request to the authentication 
+endpoint with the username and password passed as parameters in the request.</p>
+
+<p>Endpoint: /authenticate</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>*</td>
+<td>string</td>
+<td>username for authentication</td>
+</tr>
+<tr>
+<td>password</td>
+<td>*</td>
+<td>string</td>
+<td>user password for uathentication</td>
+</tr>
+</tbody></table>
+
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>Request</p>
 </blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+<span class="s1">':endpoint:/api/v1/authenticate?username=:username:&amp;password=:password:'</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="p">:</span><span class="err">username</span><span class="p">:</span><span class="err">'</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="p">:</span><span class="err">password</span><span class="p">:</span><span class="err">'</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">client</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'admin'</span><span class="p">,</span> <span class="s1">'123456'</span><span class="p">,</span> <span class="s1">':endpoint:'</span><span class="p">,</span> <span class="mi">9000</span><span class="p">,</span>
+  <span class="ss">force_secure_connection: </span><span class="kp">true</span>
+<span class="p">)</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="cp">#include "manabu.h" 
+</span><span class="c1">// TODO
+</span></code></pre>
 <blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
+<p>Success</p>
 </blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code>Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"tokens"</span>: <span class="o">{</span>
+    <span class="s2">"auth_token"</span>: <span class="s2">"... a very long base64 string ..."</span>,
+    <span class="s2">"refresh_token"</span>: <span class="s2">"... a very long base64 string ..."</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"tokens"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"auth_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># TODO</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// TODO
 </span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
+<blockquote>
+<p>Failure</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"error"</span>: <span class="o">{</span>
+    <span class="s2">"user_authentication"</span>: <span class="o">[</span><span class="s2">"invalid credentials"</span><span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"user_authentication"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"invalid credentials"</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># TODO</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// TODO
+</span></code></pre><h2 id='token-refresh'>Token Refresh</h2>
+<p>To refresh a token set, send the refresh token as a parameter and accopany the request with the 
+accompanying auth_token as the Authroization attribute in the request header. If the request 
+succeeds you will receive a new set of tokens.</p>
+
+<p>Endpoint: /authenticate/refresh</p>
+
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Default</th>
+<th>Header Attribute</th>
+<th>Required</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>Authorizaiton</td>
+<td>*</td>
+<td>string</td>
+<td>The value of a current valid auth_token</td>
 </tr>
+</tbody></table>
+
+<table><thead>
 <tr>
-<td>available</td>
+<th>Parameter</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>refresh_token</td>
+<td>*</td>
+<td>string</td>
+<td>send :refresh_token: from authentication request</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+<span class="s1">':endpoint:/api/v1/authenticate/refresh/refresh_token=:refresh_token:'</span> <span class="se">\</span>
+-H <span class="s1">'Authorization: auth_tokenGoesHere'</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># The Manabu client automatically refreshes your tokens</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// libmanabu automatically refreshes your tokens
+</span></code></pre>
+<blockquote>
+<p>Success</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"tokens"</span>: <span class="o">{</span>
+    <span class="s2">"auth_token"</span>: <span class="s2">"... a very long base64 string ..."</span>,
+    <span class="s2">"refresh_token"</span>: <span class="s2">"... a very long base64 string ..."</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"tokens"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"auth_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># The Manabu client automatically refreshes your tokens</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// libmanabu automatically refreshes your tokens
+</span></code></pre>
+<blockquote>
+<p>Failure</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"error"</span>: <span class="o">{</span>
+    <span class="s2">"user_authentication"</span>: <span class="o">[</span><span class="s2">"invalid or expired refresh token"</span><span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"user_authentication"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"invalid or expired refresh token"</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># TODO</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// TODO
+</span></code></pre><h2 id='refresh-token-invalidation-quot-closing-quot-a-session'>Refresh Token Invalidation (&quot;Closing&quot; a session)</h2>
+<p>Refresh tokens are invalidated once used, so each time you refresh you also need 
+to store the new refresh token if you intend to refresh the session. <em>However</em>, 
+refresh tokens are invalidated even if the refresh request is invalidated. 
+Specifically, refresh requests require the auth token be passed in the request 
+header like all other authorized requests, and the auth token is matched with the 
+corresponding refresh token - so, <em>if the auth token is not in the request header, 
+or the token in the request header is invalid; the refresh token will still be 
+invalidated despite the refresh request failing</em>. Because of this, you can 
+effectively &quot;close out&quot; a session by intentionally sending a refresh request 
+with the refresh token and without an auth token in the headers or with an 
+invalid auth token in the headers - making further refreshes impossible and 
+requiring a new set of tokens be issued with a new authorization request.</p>
+
+<p>Endpoint: /authenticate/refresh</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>refresh_token</td>
+<td>*</td>
+<td>string</td>
+<td>send :refresh_token: from authentication request</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+<span class="s1">':endpoint:/api/v1/authenticate/refresh/refresh_token=:refresh_token:'</span> <span class="se">\</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># When the Client or Authorization modules go out of scope  </span>
+<span class="c1">#  an attempt to invalidate the refesh token will be made.</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// The desctructor for Manabu/the Manabu Authentication objects 
+//  will attempt to invalidate the session for you.
+</span></code></pre>
+<blockquote>
+<p>Success</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"error"</span>: <span class="o">{</span>
+    <span class="s2">"user_authentication"</span>: <span class="o">[</span><span class="s2">"invalid or expired refresh token"</span><span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"user_authentication"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"invalid or expired refresh token"</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># When the Client or Authorization modules go out of scope  </span>
+<span class="c1">#  an attempt to invalidate the refesh token will be made.</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// The desctructor for Manabu/the Manabu Authentication objects 
+//  will attempt to invalidate the session for you.
+</span></code></pre>
+<blockquote>
+<p>Failure</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"tokens"</span>: <span class="o">{</span>
+    <span class="s2">"auth_token"</span>: <span class="s2">"... a very long base64 string ..."</span>,
+    <span class="s2">"refresh_token"</span>: <span class="s2">"... a very long base64 string ..."</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"tokens"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"auth_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... a very long base64 string ..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1"># TODO</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// TODO
+</span></code></pre><h1 id='roles'>Roles</h1><h2 id='get-roles-list'>Get roles list</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+
+<span class="no">Manabu</span><span class="o">::</span><span class="no">Roles</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">all</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl http://localhost:9000/api/v1/roles
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><h1 id='users'>Users</h1><h2 id='index'>Index</h2>
+<p>Retrieves list of all users</p>
+
+<aside class="warning">Only admin user can retrieve users</aside>
+<pre class="highlight shell tab-shell"><code>curl -X GET :endpoint:/api/v1/users -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s2">"manabu"</span>
+<span class="n">users</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Users</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">all</span>
+</code></pre><h2 id='create'>Create</h2>
+<p>Create new user</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
 <td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>User email address</td>
+</tr>
+<tr>
+<td>username</td>
+<td>true</td>
+<td>username</td>
+</tr>
+<tr>
+<td>password</td>
+<td>true</td>
+<td>User password min.6</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>false</td>
+<td>disable user</td>
+</tr>
+<tr>
+<td>disalbed_until</td>
+<td>false</td>
+<td>disable user until date</td>
 </tr>
 </tbody></table>
+<pre class="highlight shell tab-shell"><code>curl <span class="se">\</span>
+  -X POST <span class="s1">':endpoint:/api/v1/users?email=john@doe.com&amp;username=johndoe&amp;password=123456'</span><span class="se">\</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s2">"manabu"</span>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<span class="c1"># register with hash:</span>
+<span class="n">new_user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Users</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span>
+  <span class="ss">email: </span><span class="s1">'john@doe.com'</span><span class="p">,</span>
+  <span class="ss">username: </span><span class="s1">'johndoe'</span><span class="p">,</span>
+  <span class="ss">password: </span><span class="s1">'123456'</span>
+<span class="p">)</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<span class="n">user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+  <span class="ss">email: </span><span class="s1">'john@doe.com'</span><span class="p">,</span>
+  <span class="ss">username: </span><span class="s1">'johndoe'</span><span class="p">,</span>
+  <span class="ss">password: </span><span class="s1">'123456'</span>
+<span class="p">)</span>
+<span class="n">new_user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Students</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</code></pre><h2 id='update'>Update</h2>
+<p>TODO: Update user attribute</p>
+<h2 id='add-role'>Add Role</h2>
+<p>Add role to user</p>
+<pre class="highlight shell tab-shell"><code>curl -X POST :endpoint:/api/v1/users/1/user_roles?role_id<span class="o">=</span>:role_id: <span class="se">\</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">role</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Role</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">add_role</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+</code></pre><h1 id='students'>Students</h1>
+<p>The students endpoint [api/v1/students] offers indexing, search, and individual student record 
+referencing/lookup and registration.</p>
+<h2 id='obtaining-the-roster-student-index'>Obtaining the Roster [Student Index]</h2>
+<p>You can obtain a full student roster by simply accessing the api/v1/students endpoint.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Request</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
+<pre class="highlight shell tab-shell"><code>curl -X GET :endpoint:/api/v1/students -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="err">//</span><span class="w"> </span><span class="err">TODO</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="no">Manabu</span><span class="o">::</span><span class="no">Students</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">roster</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code></code></pre>
+<blockquote>
+<p>Success</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code></code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight cpp tab-cpp"><code></code></pre>
+<blockquote>
+<p>Failure</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code></code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight cpp tab-cpp"><code></code></pre><h2 id='obtaining-a-filtered-roster-student-index-filtering'>Obtaining a Filtered Roster [Student Index Filtering]</h2>
+<p>You can filter the roster by a variety of conditions, so that you can obtain small rosters 
+of students in specific classes, grades, enrollment status, age ranges, etc.</p>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
+<p>TODO fill in different conditions available and what kind of data to pass to them</p>
+
+<p>Filter students with condition</p>
+
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Condition</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>enrollment_status</td>
+<td>filter by enrollment status code</td>
 </tr>
 </tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Request</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<pre class="highlight shell tab-shell"><code><span class="c"># TODO</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="err">//</span><span class="w"> </span><span class="err">TODO</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code><span class="no">Manabu</span><span class="o">::</span><span class="no">Students</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">filter</span><span class="p">(</span><span class="ss">enrollment_status: </span><span class="s1">'enrolled'</span><span class="p">)</span>
+
+<span class="c1"># TODO more examples</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="c1">// TODO
 </span></code></pre>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<blockquote>
+<p>Success</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code></code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight cpp tab-cpp"><code></code></pre>
+<blockquote>
+<p>Failure</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code></code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight cpp tab-cpp"><code></code></pre><h2 id='create-a-new-student'>Create a New Student</h2>
+<p>To create a new student you must POST to the /api/v1/students endpoint with at least the following 
+required parameters.</p>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Required</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
+<td>name</td>
+<td>*</td>
+<td>string</td>
+<td>student name</td>
+</tr>
+<tr>
+<td>name_reading</td>
+<td></td>
+<td>string</td>
+<td>name reading</td>
+</tr>
+<tr>
+<td>surname</td>
+<td>*</td>
+<td>string</td>
+<td>student surname</td>
+</tr>
+<tr>
+<td>surname_reading</td>
+<td></td>
+<td>string</td>
+<td>surname reading</td>
+</tr>
+<tr>
+<td>middle_name</td>
+<td></td>
+<td>string</td>
+<td>middle name</td>
+</tr>
+<tr>
+<td>middle_name_reading</td>
+<td></td>
+<td>string</td>
+<td>middle name reading</td>
+</tr>
+<tr>
+<td>birth_date</td>
+<td>*</td>
+<td></td>
+<td>birth_date</td>
+</tr>
+<tr>
+<td>gender</td>
+<td></td>
+<td>stateless bool</td>
+<td>0/false for female, 1/true for male, nil for unknown/other gender</td>
+</tr>
+<tr>
+<td>enrollment_status_code</td>
+<td></td>
+<td>label</td>
+<td>enrollment status code</td>
+</tr>
+<tr>
+<td>picture</td>
+<td></td>
+<td>binary</td>
+<td>multipart file field</td>
 </tr>
 </tbody></table>
-<h1 id='errors'>Errors</h1>
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
 
-<p>The Kittn API uses the following error codes:</p>
+<blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST :endpoint:/api/v1/students?name<span class="o">=</span>john&amp;surname<span class="o">=</span>doe <span class="se">\</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s2">"manabu"</span>
+
+<span class="n">new_user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Students</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'john'</span><span class="p">,</span> <span class="ss">surname: </span><span class="s1">'Doe'</span><span class="p">)</span>
+<span class="c1">#or</span>
+<span class="n">user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'john'</span><span class="p">,</span> <span class="ss">surname: </span><span class="s1">'doe'</span><span class="p">)</span>
+<span class="n">new_user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Students</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code></code></pre>
+<blockquote>
+<p>Success</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"id"</span>: 1,
+    <span class="s2">"name"</span>: <span class="s2">"john"</span>,
+    <span class="s2">"surname"</span>: <span class="s2">"doe"</span>,
+    <span class="s2">"middle_name"</span>: null,
+    <span class="s2">"name_reading"</span>: <span class="s2">""</span>,
+    <span class="s2">"middle_name_reading"</span>: <span class="s2">""</span>,
+    <span class="s2">"surname_reading"</span>: <span class="s2">""</span>,
+    <span class="s2">"gender"</span>: null,
+    <span class="s2">"birth_date"</span>: null,
+    <span class="s2">"admitted"</span>: null,
+    <span class="s2">"graduated"</span>: null,
+    <span class="s2">"code"</span>: <span class="s2">"**-****-00001"</span>,
+    <span class="s2">"serial_id"</span>: <span class="s2">"00001"</span>,
+    <span class="s2">"foreign_id_code"</span>: null,
+    <span class="s2">"national_registration_code"</span>: null,
+    <span class="s2">"enrollment_status_code"</span>: null,
+    <span class="s2">"picture_file_name"</span>: null,
+    <span class="s2">"picture_content_type"</span>: null,
+    <span class="s2">"picture_file_size"</span>: null,
+    <span class="s2">"picture_updated_at"</span>: null,
+    <span class="s2">"addresses_count"</span>: 0,
+    <span class="s2">"contacts_count"</span>: 0,
+    <span class="s2">"notes_count"</span>: 0,
+    <span class="s2">"courses_count"</span>: 0,
+    <span class="s2">"guardians_count"</span>: 0,
+    <span class="s2">"external_school_records_count"</span>: 0,
+    <span class="s2">"badges_count"</span>: 0,
+    <span class="s2">"primary_address"</span>: null,
+    <span class="s2">"primary_contact"</span>: null,
+    <span class="s2">"class_and_number"</span>: null,
+    <span class="s2">"user_id"</span>: null,
+    <span class="s2">"faculty_id"</span>: null,
+    <span class="s2">"commute_method_type_id"</span>: null,
+    <span class="s2">"scholarship_status_id"</span>: 1,
+    <span class="s2">"created_at"</span>: <span class="s2">"2019-02-10T17:11:49.016Z"</span>,
+    <span class="s2">"updated_at"</span>: <span class="s2">"2019-02-10T17:11:49.016Z"</span>,
+    <span class="s2">"extracurricular_activities_count"</span>: 0,
+    <span class="s2">"class_groups_count"</span>: 0,
+    <span class="s2">"enrollment_status"</span>: null
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"surname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"doe"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"middle_name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name_reading"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"middle_name_reading"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"surname_reading"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"gender"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"birth_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"admitted"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"graduated"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"**-****-00001"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"serial_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00001"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"foreign_id_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"national_registration_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"enrollment_status_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"picture_file_name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"picture_content_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"picture_file_size"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"picture_updated_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"addresses_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"contacts_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"notes_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"courses_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"guardians_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"external_school_records_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"badges_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"primary_address"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"primary_contact"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"class_and_number"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"faculty_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"commute_method_type_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"scholarship_status_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-10T17:11:49.016Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-10T17:11:49.016Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"extracurricular_activities_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"class_groups_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"enrollment_status"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight cpp tab-cpp"><code></code></pre>
+<blockquote>
+<p>Failure</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"error"</span>: <span class="s2">"param is missing or the value is empty: surname"</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"param is missing or the value is empty: surname"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight cpp tab-cpp"><code></code></pre><h2 id='update-a-student'>Update a student</h2>
+<p>Update student attribute</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>false</td>
+<td>student name</td>
+</tr>
+<tr>
+<td>surname</td>
+<td>false</td>
+<td>student surname</td>
+</tr>
+<tr>
+<td>name_reading</td>
+<td>false</td>
+<td>name reading</td>
+</tr>
+<tr>
+<td>surname_reading</td>
+<td>false</td>
+<td>surname reading</td>
+</tr>
+<tr>
+<td>middle_name</td>
+<td>false</td>
+<td>middle name</td>
+</tr>
+<tr>
+<td>middle_name_reading</td>
+<td>false</td>
+<td>middle name reading</td>
+</tr>
+<tr>
+<td>birth_date</td>
+<td>false</td>
+<td>birth_date</td>
+</tr>
+<tr>
+<td>gender</td>
+<td>false</td>
+<td>gender</td>
+</tr>
+<tr>
+<td>enrollment_status_code</td>
+<td>false</td>
+<td>enrollment status code</td>
+</tr>
+<tr>
+<td>picture</td>
+<td>false</td>
+<td>multipart file field</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X PATCH :endpoint:/api/v1/students/1?name<span class="o">=</span>jane <span class="se">\</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'jane'</span><span class="p">,</span> <span class="ss">surname: </span><span class="s1">'doe'</span><span class="p">)</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code></code></pre><h2 id='get-a-student-picture'>Get a student picture</h2>
+<p>Get picture file</p>
+
+<blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl <span class="s1">':endpoint:/api/v1/students/:id:/picture'</span>
+</code></pre><pre class="highlight json tab-json"><code></code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">user</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">picture</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code></code></pre><h2 id='set-picture-to-a-student'>Set Picture to a student</h2><pre class="highlight shell tab-shell"><code>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">student</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">student</span><span class="p">.</span><span class="nf">set_picture</span><span class="p">(</span><span class="s1">'path/to/file'</span><span class="p">)</span>
+</code></pre>
+<p>Add guardian to а student</p>
+<pre class="highlight shell tab-shell"><code>curl -X POST :endpoint:/api/v1/students/:id:/student_guardians?guardian_id<span class="o">=</span>:guardian_id: <span class="se">\</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code>  <span class="nb">require</span> <span class="s1">'manabu'</span>
+  <span class="n">student</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">guardian</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Guardian</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">student</span><span class="p">.</span><span class="nf">add_guardian</span><span class="p">(</span><span class="n">guardian</span><span class="p">)</span>
+</code></pre><h2 id='list-student-guardians'>List student guardians</h2><pre class="highlight shell tab-shell"><code>  curl -X POST :endpoint:/api/v1/students/:id:/guardians<span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">student</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">student</span><span class="p">.</span><span class="nf">guardians</span>
+</code></pre><h2 id='list-student-courses'>List student courses</h2><pre class="highlight shell tab-shell"><code>  curl -X POST :endpoint:/api/v1/students/:id:/courses<span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">student</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">student</span><span class="p">.</span><span class="nf">courses</span>
+</code></pre><h1 id='enrollment-status'>Enrollment Status</h1><h2 id='list-all-enrollment-statuses'>List all enrollment statuses</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="no">Manabu</span><span class="o">::</span><span class="no">EnrollmentStatuses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">all</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">":endpoint:/api/v1/enrollment_statuses"</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><h2 id='test-all-enrollment-statuses'>Test all enrollment statuses</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="no">Manabu</span><span class="o">::</span><span class="no">EnrollmentStatuses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">all</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET <span class="s2">":endpoint:/api/v1/enrollment_statuses"</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><h1 id='contact-types'>Contact Types</h1><h2 id='get-contact-types-list'>Get contact types list</h2><pre class="highlight shell tab-shell"><code>curl -X GET :endpoint:/api/v1/contact_types -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="no">Manabu</span><span class="o">::</span><span class="no">ContactTypes</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">all</span>
+</code></pre><h2 id='register-new-contact-type'>Register new contact type</h2><pre class="highlight shell tab-shell"><code>curl -X POST :endpoint:/api/v1/contact_types?name<span class="o">=</span><span class="nb">test</span> <span class="se">\</span>
+  -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s2">"manabu"</span>
+<span class="no">Manabu</span><span class="o">::</span><span class="no">ContactTypes</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span>
+</code></pre><h1 id='courses'>Courses</h1><h2 id='list-courses'>List Courses</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">courses</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Courses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">all</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET :endpoint:/api/v1/courses -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><h2 id='register-course'>Register course</h2>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>true</td>
+<td></td>
+</tr>
+<tr>
+<td>syllabus_id</td>
+<td>false</td>
+<td></td>
+</tr>
+</tbody></table>
+<pre class="highlight shell tab-shell"><code>  curl -X POST :endpoint:/api/v1/courses?code<span class="o">=</span>Science101 <span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s2">"manabu"</span>
+
+<span class="n">new_course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Courses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="ss">code: </span><span class="s1">'science101'</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="n">course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Course</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">code: </span><span class="s1">'science101'</span><span class="p">)</span>
+<span class="n">new_course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Courses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="n">course</span><span class="p">)</span>
+</code></pre><h1 id='course'>Course</h1><h2 id='get-students'>Get students</h2><pre class="highlight shell tab-shell"><code>  curl -X GET :endpoint:/api/v1/courses/:course_id/students <span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Course</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">course</span><span class="p">.</span><span class="nf">students</span>
+</code></pre><h2 id='get-enrollments'>Get enrollments</h2><pre class="highlight shell tab-shell"><code>  curl -X GET :endpoint:/api/v1/courses/:course_id/enrollments <span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Course</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">course</span><span class="p">.</span><span class="nf">enrollments</span>
+</code></pre><h2 id='add-student-to-course'>Add student to course</h2><pre class="highlight shell tab-shell"><code>  curl -X POST :endpoint:/api/v1/courses/:course_id/enrollments?student_id<span class="o">=</span>:student_id:&amp;seat_number<span class="o">=</span>:seat_number: <span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">student</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Course</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">course</span><span class="p">.</span><span class="nf">add_student</span><span class="p">(</span><span class="n">student</span><span class="p">,</span> <span class="ss">seat_number: </span><span class="mi">5</span><span class="p">)</span>
+</code></pre><h2 id='set-course-enrollment-seat_number-for-student'>Set course enrollment seat_number for student</h2><pre class="highlight shell tab-shell"><code>  curl -X PATCH :endpoint:/api/v1/courses/:course_id/enrollments/:enrollment_id:?seat_number<span class="o">=</span>:seat_number: <span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">student</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Course</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">enrollment</span> <span class="o">=</span> <span class="n">course</span><span class="p">.</span><span class="nf">enrollments</span><span class="p">.</span><span class="nf">first</span>
+<span class="n">enrollment</span><span class="p">.</span><span class="nf">seat_number</span> <span class="o">=</span> <span class="mi">5</span>
+</code></pre><h2 id='get-enrollment-student'>Get enrollment student</h2><pre class="highlight shell tab-shell"><code>  <span class="c"># Get student by id</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">student</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Student</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Course</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">enrollment</span> <span class="o">=</span> <span class="n">course</span><span class="p">.</span><span class="nf">enrollments</span><span class="p">.</span><span class="nf">first</span>
+<span class="n">enrollment</span><span class="p">.</span><span class="nf">student</span>
+</code></pre><h1 id='syllabuses'>Syllabuses</h1><h2 id='list-syllabuses'>List Syllabuses</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'manabu'</span>
+<span class="n">syllabuses</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Syllabuses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">all</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET :endpoint:/api/v1/syllabuses -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><h2 id='register-course'>Register course</h2>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>true</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>true</td>
+<td></td>
+</tr>
+</tbody></table>
+<pre class="highlight shell tab-shell"><code>  curl -X POST :endpoint:/api/v1/syllabuses?code<span class="o">=</span>science101&amp;name<span class="o">=</span>Science 101 <span class="se">\</span>
+    -H <span class="s1">'Authorization: :auth_token:'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s2">"manabu"</span>
+
+<span class="n">new_course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Syllabuses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="ss">code: </span><span class="s1">'science101'</span><span class="p">.</span> <span class="nf">name</span><span class="p">:</span> <span class="s1">'Science 101'</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="n">course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Course</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">code: </span><span class="s1">'science101'</span><span class="p">.</span> <span class="nf">name</span><span class="p">:</span> <span class="s1">'Science 101'</span><span class="p">)</span>
+<span class="n">new_course</span> <span class="o">=</span> <span class="no">Manabu</span><span class="o">::</span><span class="no">Syllabuses</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="n">course</span><span class="p">)</span>
+</code></pre><h1 id='errors'>Errors</h1>
+<p>The GAKU Engine API uses the following error codes:</p>
 
 <table><thead>
 <tr>
@@ -445,57 +1209,57 @@ Remember — a happy kitten is an authenticated kitten!
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request -- Your request sucks.</td>
+<td>Bad Request -- Your request is invalid.</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
+<td>Unauthorized -- The authenticaition credientials you are using are invalid.</td>
 </tr>
 </tbody></table>
+
+<p>　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　<br>
+　    </p>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
+                <a href="#" data-language-name="json">json</a>
                 <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="cpp">cpp</a>
           </div>
       </div>
     </div>
