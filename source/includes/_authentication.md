@@ -37,10 +37,12 @@ endpoint with the username and password passed as parameters in the request.
   
 Endpoint: /authenticate
 
-| Parameter | Required | Description                      |
-| --------- | -------- | -------------------------------- |
-| username  | *        | username for authentication      |
-| password  | *        | user password for uathentication |
+| Parameter | Required | Type   | Description                      |
+| --------- | -------- | ------ | -------------------------------- |
+| username  | *        | string | username for authentication      |
+| password  | *        | string | user password for uathentication |
+
+> Request
 
 ```shell
 curl -X POST \
@@ -48,25 +50,9 @@ curl -X POST \
 ```
 
 ```json
-# request
 {
   "username": ':username:',
   "password": ':password:'
-}
-
-# successful response (user authentication succeeded)
-{
-  "tokens": {
-    "auth_token": "... a very long base64 string ...",
-    "refresh_token": "... a very long base64 string ..."
-  }
-}
-
-# failed response (user authentication failed)
-{
-  "error": {
-    "user_authentication": ["invalid credentials"]
-  }
 }
 ```
 
@@ -79,6 +65,61 @@ client = Manabu::Client.new('admin', '123456', ':endpoint:', 9000,
 
 ```cpp
 #include "manabu.h" 
+// TODO
+```
+
+> Success
+
+```shell
+{
+  "tokens": {
+    "auth_token": "... a very long base64 string ...",
+    "refresh_token": "... a very long base64 string ..."
+  }
+}
+```
+
+```json
+{
+  "tokens": {
+    "auth_token": "... a very long base64 string ...",
+    "refresh_token": "... a very long base64 string ..."
+  }
+}
+```
+
+```ruby
+# TODO
+```
+
+```cpp
+// TODO
+```
+
+> Failure
+
+```shell
+{
+  "error": {
+    "user_authentication": ["invalid credentials"]
+  }
+}
+```
+
+```json
+{
+  "error": {
+    "user_authentication": ["invalid credentials"]
+  }
+}
+```
+
+```ruby
+# TODO
+```
+
+```cpp
+// TODO
 ```
 
 Token Refresh
@@ -89,13 +130,15 @@ succeeds you will receive a new set of tokens.
   
 Endpoint: /authenticate/refresh
 
-| Header Attribute | Required | Description                                   |
-| ---------------- | -------- | --------------------------------------------- |
-| Authorizaiton    | *        | The value of a current valid auth_token       |
+| Header Attribute | Required | Type   | Description                                   |
+| ---------------- | -------- | ------ | --------------------------------------------- |
+| Authorizaiton    | *        | string | The value of a current valid auth_token       |
 
-| Parameter     | Required | Description                                      |
-| ------------- | -------- | ------------------------------------------------ |
-| refresh_token | *        | send :refresh_token: from authentication request |
+| Parameter     | Required | Type   | Description                                      |
+| ------------- | -------- | ------ | ------------------------------------------------ |
+| refresh_token | *        | string | send :refresh_token: from authentication request |
+
+> Request
 
 ```shell
 curl -X POST \
@@ -103,26 +146,36 @@ curl -X POST \
 -H 'Authorization: auth_tokenGoesHere'
 ```
 
-```JSON
-# request *NOTE!: You can not refresh with only JSON data, you *MUST* pass your the 
-#  accompanying auth_token in your request headers!
+```json
 {
   "refresh_token": "... a very long base64 string ..."
 }
+```
 
-# successful response (user authentication refresh succeeded)
+```ruby
+# The Manabu client automatically refreshes your tokens
+```
+
+```cpp
+// libmanabu automatically refreshes your tokens
+```
+
+> Success
+
+```shell
 {
   "tokens": {
     "auth_token": "... a very long base64 string ...",
     "refresh_token": "... a very long base64 string ..."
   }
 }
+```
 
-# failed response (refresh token invalid or not accompanied by the auth token
-#  in the request header)
+```json
 {
-  "error": {
-    "user_authentication": ["invalid or expired refresh token"]
+  "tokens": {
+    "auth_token": "... a very long base64 string ...",
+    "refresh_token": "... a very long base64 string ..."
   }
 }
 ```
@@ -133,6 +186,32 @@ curl -X POST \
 
 ```cpp
 // libmanabu automatically refreshes your tokens
+```
+
+> Failure
+
+```shell
+{
+  "error": {
+    "user_authentication": ["invalid or expired refresh token"]
+  }
+}
+```
+
+```json
+{
+  "error": {
+    "user_authentication": ["invalid or expired refresh token"]
+  }
+}
+```
+
+```ruby
+# TODO
+```
+
+```cpp
+// TODO
 ```
 
 Refresh Token Invalidation ("Closing" a session)
@@ -153,34 +232,47 @@ requiring a new set of tokens be issued with a new authorization request.
 
 Endpoint: /authenticate/refresh
 
-| Parameter     | Required | Description                                      |
-| ------------- | -------- | ------------------------------------------------ |
-| refresh_token | *        | send :refresh_token: from authentication request |
+| Parameter     | Required | Type   | Description                                      |
+| ------------- | -------- | ------ | ------------------------------------------------ |
+| refresh_token | *        | string | send :refresh_token: from authentication request |
+
+> Request
 
 ```shell
 curl -X POST \
 ':endpoint:/api/v1/authenticate/refresh/refresh_token=:refresh_token:' \
 ```
 
-```JSON
-# request *NOTE!: If the accompanying auth_token in your request headers you will 
-#  end up refreshing the tokens instead of invalidating them!
+```json
 {
   "refresh_token": "... a very long base64 string ..."
 }
+```
 
-# successful response (user refresh token invalidated)
+```ruby
+# When the Client or Authorization modules go out of scope  
+#  an attempt to invalidate the refesh token will be made.
+```
+
+```cpp
+// The desctructor for Manabu/the Manabu Authentication objects 
+//  will attempt to invalidate the session for you.
+```
+
+> Success
+
+```shell
 {
   "error": {
     "user_authentication": ["invalid or expired refresh token"]
   }
 }
+```
 
-# failed response (you accidentally refreshed the tokens)
+```json
 {
-  "tokens": {
-    "auth_token": "... a very long base64 string ...",
-    "refresh_token": "... a very long base64 string ..."
+  "error": {
+    "user_authentication": ["invalid or expired refresh token"]
   }
 }
 ```
@@ -193,4 +285,32 @@ curl -X POST \
 ```cpp
 // The desctructor for Manabu/the Manabu Authentication objects 
 //  will attempt to invalidate the session for you.
+```
+
+> Failure
+
+```shell
+{
+  "tokens": {
+    "auth_token": "... a very long base64 string ...",
+    "refresh_token": "... a very long base64 string ..."
+  }
+}
+```
+
+```json
+{
+  "tokens": {
+    "auth_token": "... a very long base64 string ...",
+    "refresh_token": "... a very long base64 string ..."
+  }
+}
+```
+
+```ruby
+# TODO
+```
+
+```cpp
+// TODO
 ```
