@@ -50,6 +50,61 @@ Create new student
     -H 'Authorization: :auth_token:'
 ```
 
+```json
+// Successful response
+
+{
+    "id": 1,
+    "name": "john",
+    "surname": "doe",
+    "middle_name": null,
+    "name_reading": "",
+    "middle_name_reading": "",
+    "surname_reading": "",
+    "gender": null,
+    "birth_date": null,
+    "admitted": null,
+    "graduated": null,
+    "code": "**-****-00001",
+    "serial_id": "00001",
+    "foreign_id_code": null,
+    "national_registration_code": null,
+    "enrollment_status_code": null,
+    "picture_file_name": null,
+    "picture_content_type": null,
+    "picture_file_size": null,
+    "picture_updated_at": null,
+    "addresses_count": 0,
+    "contacts_count": 0,
+    "notes_count": 0,
+    "courses_count": 0,
+    "guardians_count": 0,
+    "external_school_records_count": 0,
+    "badges_count": 0,
+    "primary_address": null,
+    "primary_contact": null,
+    "class_and_number": null,
+    "user_id": null,
+    "faculty_id": null,
+    "commute_method_type_id": null,
+    "scholarship_status_id": 1,
+    "created_at": "2019-02-10T17:11:49.016Z",
+    "updated_at": "2019-02-10T17:11:49.016Z",
+    "extracurricular_activities_count": 0,
+    "class_groups_count": 0,
+    "enrollment_status": null
+
+
+}
+```
+
+```json
+// Response with error
+{
+  "error": "param is missing or the value is empty: surname"
+}
+```
+
 ```ruby
 require "manabu"
 
